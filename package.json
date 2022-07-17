@@ -2,10 +2,10 @@
   "name": "http-server",
   "version": "0.0.1",
   "description": "A custom made node http server using typescript",
-  "main": "src/index.ts",
+  "main": "index.ts",
   "scripts": {
     "build": "tsc",
-    "start": "nodemon ./src/index.ts"
+    "start": "nodemon"
   },
   "keywords": [
     "http",

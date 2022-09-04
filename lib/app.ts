@@ -3,18 +3,17 @@ import { Route } from './route'
 
 class App {
 
-    server: Server
-    routes: Array<string>
-    port: Number
-    constructor(routes: Array<string>, port: Number) {
+    server
+    routes
+    port
+
+    constructor(routes: Array<Route>, port: Number) {
         this.server = http.createServer()
         this.routes = routes
         this.port = port
     }
 
     start() {
-        // this.mountRoutes()
-        // this.server.on((req))
         
         const routes: Array<Route> = [{
             url: '/hello',
@@ -47,11 +46,6 @@ class App {
                     route.requestHandler(req, res)
                 }
             })
-            // res.setHeader('Content-Type', 'application/json')
-            // res.end(JSON.stringify({
-            //     'message': "Hello visitorr"
-            // }))
-
         })
 
         this.server.listen(this.port, () => {

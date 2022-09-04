@@ -1,20 +1,17 @@
 import http from 'http'
+import createApp from './lib/app'
 
-const PORT = 8080
-const server = http.createServer()
+const app = createApp()
 
-const hi = 'e'
+app.start()
 
-server.on('request', (req, res) => {
-    console.log(`Request: Date [${Date.now()}], URL [${req.url}], METHOD [${req.method}] `)
-    res.setHeader('Content-Type','application/json')
-    res.end(JSON.stringify({
-        'message': "Hello visitorr"
-    }))
+// server.on('request', (req, res) => {
+//     console.log(`Request: Date [${Date.now()}], URL [${req.url}], METHOD [${req.method}] `)
+//     res.setHeader('Content-Type','application/json')
+//     res.end(JSON.stringify({
+//         'message': "Hello visitorr"
+//     }))
     
-})
+// })
 
-server.listen(PORT, () => {
-    console.log(`Server listening at port [${PORT}]`)
-})
 

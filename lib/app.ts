@@ -1,36 +1,36 @@
-import http, { IncomingMessage, ServerResponse } from 'http'
+import http, { IncomingMessage, ServerResponse } from 'node:http'
 import { Route } from './route'
 
+let routes: Array<Route> = []
+
+const notFound = (req: IncomingMessage, res: ServerResponse) => {
+    res.statusCode = 404
+    res.end(JSON.stringify({
+        message: 'Not Found'
+    }))
+}
 class App {
 
     server
-    routes: Array<Route>
     port
 
-    constructor(routes: Array<Route>, port: Number) {
+    constructor(port: Number) {
         this.server = http.createServer()
-        this.routes = []
         this.port = port
     }
 
-    addRoutes(routes: Array<Route>) {
-        this.routes.concat(routes)
+    addRoutes(newRoutes: Array<Route>) {
+        routes = routes.concat(newRoutes)
     }
 
     start() {
-        
-
         this.server.on('request', (req: IncomingMessage, res: ServerResponse) => {
             console.log(`Number of connections: ${this.server.connections}`)
             console.log(`Request: Date [${Date.now()}], URL [${req.url}], METHOD [${req.method}] `)
-            this.routes.map((route) => {
-                console.log(route.url)
-                if (route.url === req.url && route.method === req.method) {
-                    route.requestHandler(req, res)
-                }
-            })
+            const routeMatch = routes.find((route) => route.url === req.url && route.method === req.method)
 
-            
+            routeMatch != null ? routeMatch.requestHandler(req, res) : notFound(req, res)
+
         })
 
         this.server.listen(this.port, () => {
@@ -43,7 +43,7 @@ class App {
 }
 
 function createApp(port: Number = 8080) {
-    return new App([], port)
+    return new App(port)
 }
 
 export default createApp

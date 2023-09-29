@@ -27,7 +27,10 @@ class App {
         this.server.on('request', (req: IncomingMessage, res: ServerResponse) => {
             console.log(`Number of connections: ${this.server.connections}`)
             console.log(`Request: Date [${Date.now()}], URL [${req.url}], METHOD [${req.method}] `)
-            const routeMatch = routes.find((route) => route.url === req.url && route.method === req.method)
+
+            const reqUrl = new URL(req.url || '', `http://${req.headers.host}`) // TODO: Would be nice not having to set the protocol
+
+            const routeMatch = routes.find((route) => route.url === reqUrl.pathname && route.method === req.method)
 
             routeMatch != null ? routeMatch.requestHandler(req, res) : notFound(req, res)
 

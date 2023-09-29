@@ -4,7 +4,7 @@ import { Route } from './lib/route'
 
 const app = createApp()
 
-// TODO: params and query params need to be handled
+// TODO: handle URL params
 const routes: Array<Route> = [{
     url: '/hello',
     method: 'GET',

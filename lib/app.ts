@@ -1,5 +1,6 @@
 import http, { IncomingMessage, ServerResponse } from 'node:http'
 import { Route } from './route'
+import getPathParams, { isRouteMatchForRequest } from "./get-path-params"
 
 let routes: Array<Route> = []
 
@@ -30,9 +31,19 @@ class App {
 
             const reqUrl = new URL(req.url || '', `http://${req.headers.host}`) // TODO: Would be nice not having to set the protocol
 
-            const routeMatch = routes.find((route) => route.url === reqUrl.pathname && route.method === req.method)
+            const routeMatch = routes.find((route) => isRouteMatchForRequest(route.url, reqUrl.pathname) && route.method === req.method)
 
-            routeMatch != null ? routeMatch.requestHandler(req, res) : notFound(req, res)
+            if (routeMatch != null) {
+                // getPathParams uses the same regexp as isRouteMatchForRequest.
+                // Consider a refactor when performance optimization is required
+                const params = getPathParams(routeMatch.url, reqUrl.pathname)
+                Object.assign(req, params)
+                routeMatch.requestHandler(req, res)
+                return
+            }
+
+            notFound(req, res)
+            return
 
         })
 

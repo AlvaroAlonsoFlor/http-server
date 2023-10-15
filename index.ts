@@ -1,10 +1,8 @@
-import http, { IncomingMessage, ServerResponse } from 'http'
+import { IncomingMessage, ServerResponse } from 'http'
 import createApp from './lib/app'
 import { Route } from './lib/route'
-
 const app = createApp()
 
-// TODO: handle URL params
 const routes: Array<Route> = [{
     url: '/hello',
     method: 'GET',
@@ -20,7 +18,7 @@ const routes: Array<Route> = [{
     }
 },
 {
-    url: '/user/1',
+    url: '/user/:id',
     method: 'GET',
     requestHandler: (req: IncomingMessage, res: ServerResponse ) => {
         res.setHeader('Content-Type', 'application/json')
@@ -33,7 +31,7 @@ const routes: Array<Route> = [{
 }]
 
 const secondRouteBatch = [{
-    url: '/admin/1',
+    url: '/admin/:id',
     method: 'GET',
     requestHandler: (req: IncomingMessage, res: ServerResponse ) => {
         res.setHeader('Content-Type', 'application/json')

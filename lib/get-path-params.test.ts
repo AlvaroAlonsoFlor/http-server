@@ -1,4 +1,4 @@
-import getPathParams from "./get-path-params";
+import getPathParams, {isRouteMatchForRequest} from "./get-path-params";
 
 describe('getPathParams', () => {
     it('should extract parameters from a url', () => {
@@ -33,5 +33,32 @@ describe('getPathParams', () => {
         const params = getPathParams(route, path)
 
         expect(params).toEqual({})
+    })
+})
+
+describe('routeMatcher', () => {
+    it('should match a correct route', () => {
+        // Given
+        const path = '/user/:id'
+        const requestPath = '/user/21'
+
+        // When
+        const result = isRouteMatchForRequest(path, requestPath)
+
+        // Then
+        expect(result).toBe(true)
+    })
+
+    it('should not return a match if there is no correct route', () => {
+        // Given
+        const path = '/user/:id'
+        const requestPath = '/21'
+
+        // When
+        const result = isRouteMatchForRequest(path, requestPath)
+
+        // Then
+        expect(result).toBe(false)
+
     })
 })

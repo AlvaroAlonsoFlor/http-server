@@ -12,3 +12,10 @@ export default function getPathParams (route: string, requestPath: string) {
     })
     return params
 }
+
+export function isRouteMatchForRequest (route: string, requestPath: string): boolean {
+    const regexp = pathToRegexp(route)
+    const result = regexp.exec(requestPath)
+
+    return result != null
+}

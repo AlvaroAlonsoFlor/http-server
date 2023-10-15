@@ -1,6 +1,6 @@
 import http, { IncomingMessage, ServerResponse } from 'node:http'
 import { Route } from './route'
-import getPathParams, { isRouteMatchForRequest } from "./get-path-params"
+import { getPathParams, isRouteMatchForRequest } from './path-utils'
 
 let routes: Array<Route> = []
 
